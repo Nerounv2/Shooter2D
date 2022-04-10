@@ -2,13 +2,13 @@
 
 public class PlayerController : MonoBehaviour
 {
-    private Rigidbody2D playerRigidbody;
-    private float MoveDirection;
-
+    [SerializeField] private Rigidbody2D playerRigidbody;
 
     [SerializeField] private float moveSpeed = 7f;
     [SerializeField] private float jumpForce = 3f;
     [SerializeField] private GameObject playerPrefab;
+
+    private Vector2 moveVector;
     
 
     // Start is called before the first frame update
@@ -24,20 +24,20 @@ public class PlayerController : MonoBehaviour
 
         Move();
 
-
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            playerRigidbody.AddForce(new Vector2(0, jumpForce * 5f), ForceMode2D.Impulse);
+        }
     }
 
     private void Move()
     {
-        MoveDirection = Input.GetAxis("Horizontal") * moveSpeed;
-
-        playerRigidbody.velocity = new Vector2(MoveDirection, 0);
+        moveVector.x = Input.GetAxis("Horizontal");
 
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            playerRigidbody.AddForce(new Vector2(0, jumpForce*5f), ForceMode2D.Impulse);
-            Debug.Log(jumpForce);
-        }
+        playerRigidbody.velocity = new Vector2(moveVector.x * moveSpeed, playerRigidbody.velocity.y);
+
+
+       
     }
 }
