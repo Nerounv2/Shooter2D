@@ -4,18 +4,44 @@ using UnityEngine;
 
 public class BulletScript: MonoBehaviour
 {
-    [SerializeField] private float bulletSpeed = 20f;
+   private Rigidbody2D rb;
 
-    private Rigidbody2D bulletRigidbody;
+    private float speed = 5f;
+    private int damage = 20;
 
-    // Start is called before the first frame update
+    private int life = 0;
+
+    private int lifeMax = 500;
+
     void Start()
-    {
-        bulletRigidbody.velocity = transform.right * bulletSpeed; 
+    {   
+        rb = GetComponent<Rigidbody2D>();
+        
+        if (transform.localScale.x > 0f)
+        {
+            rb.velocity = transform.right * speed; //Èçìåíåíèå ñêîðîñòè
+        }
+
+        if (transform.localScale.x < 0f)
+        {
+            rb.velocity = (transform.right * -1) * speed; //Èçìåíåíèå ñêîðîñòè
+        }
+
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    void Update()
+    {
+        life++;
+
+        if (life >= lifeMax)
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D hitInfo) //Ìåòîä, êîòîðûé ñðàáàòûâàåò ïðè ïîïàäàíèè
     {
         Destroy(gameObject);
     }
+
 }
